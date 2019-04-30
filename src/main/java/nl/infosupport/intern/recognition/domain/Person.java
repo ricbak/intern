@@ -4,11 +4,12 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -20,13 +21,16 @@ public class Person {
     private static Logger logger = LoggerFactory.getLogger(Person.class);
 
     @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    private long id;
+
     private String name;
 
-    private String personId;
+    private String azureId;
 
-    public Person(String name, String personId) {
+    public Person(String name, String azureId) {
         this.name = name;
-        this.personId = personId;
+        this.azureId = azureId;
     }
 
     public void setName(String name){
@@ -34,8 +38,12 @@ public class Person {
         this.name = name;
     }
 
-    public void setPersonId(String personId){
-        logger.debug("set personId: {}", personId);
-        this.personId = personId;
+    public void setAzureId(String azureId){
+        logger.debug("set azureId: {}", azureId);
+        this.azureId = azureId;
     }
+
+    @Column(name = "created_at")
+    @CreationTimestamp
+    private Date createdAt;
 }

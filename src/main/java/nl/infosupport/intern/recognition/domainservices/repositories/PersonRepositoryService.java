@@ -30,16 +30,11 @@ public class PersonRepositoryService implements PersonRepositoryAdapter {
     @Override
     public Optional<String> isUniqueName(String name) {
 
-        if(!repo.existsById(name)){
+        if(!repo.existsByName(name)){
             return Optional.of(name);
         }
 
         return Optional.empty();
-    }
-
-    @Override
-    public Optional<Person> findById(String name) {
-        return repo.findById(name);
     }
 
     @Override
@@ -50,7 +45,7 @@ public class PersonRepositoryService implements PersonRepositoryAdapter {
 
         try {
             String fetchedPersonIdFromAzure = personId.get(5, SECONDS);
-            person.setPersonId(fetchedPersonIdFromAzure);
+            person.setAzureId(fetchedPersonIdFromAzure);
             repo.save(person);
             logger.debug("entity saved in database");
         } catch (InterruptedException | ExecutionException e) {
@@ -65,12 +60,12 @@ public class PersonRepositoryService implements PersonRepositoryAdapter {
         //now I can't deal with the exception in the controller
 //        personId.orTimeout(5, SECONDS)
 //                .exceptionally((throwable) -> "Time-Out")
-//                .thenAcceptAsync(person::setPersonId)
+//                .thenAcceptAsync(person::setAzureId)
 //                .thenRun(() -> repo.save(person))
 //                .thenRun(() -> logger.debug("entity saved in database"));
 
 
-        return person.getPersonId();
+        return person.getAzureId();
     }
 
 

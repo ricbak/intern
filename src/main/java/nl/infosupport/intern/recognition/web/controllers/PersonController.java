@@ -37,11 +37,11 @@ public class PersonController {
         }
         catch (NoUniqueNameException exc){
             throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, exc.getMessage(), exc);
+                    HttpStatus.BAD_REQUEST, exc.getMessage());
         }
         catch (AzureTimeOutException exc) {
             throw new ResponseStatusException(
-                    HttpStatus.REQUEST_TIMEOUT, exc.getMessage(), exc);
+                    HttpStatus.REQUEST_TIMEOUT, exc.getMessage());
         }
 
     }
