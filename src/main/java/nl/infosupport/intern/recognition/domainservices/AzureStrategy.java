@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.awt.image.RenderedImage;
 import java.io.IOException;
 
 @Component
@@ -36,7 +37,7 @@ public class AzureStrategy implements RecognitionStrategy {
         logger.debug("StatusCode: {}", response.getStatusLine().getStatusCode());
 
         try {
-            JSONObject jsonResult = new JSONObject(EntityUtils.toString(response.getEntity()));
+            var jsonResult = new JSONObject(EntityUtils.toString(response.getEntity()));
 
             if (response.getStatusLine().getStatusCode() != 200) {
                 throw new AzureException(jsonResult.optJSONObject("error").toString());
@@ -47,5 +48,29 @@ public class AzureStrategy implements RecognitionStrategy {
             logger.debug("Exception", e);
             throw new RuntimeException(e.getMessage());
         }
+    }
+
+    @Override
+    public boolean train() {
+        HttpResponse response = azureRequestHandler.performTrainRequest();
+
+        logger.debug("StatusCode: {}", response.getStatusLine().getStatusCode());
+
+        try {
+            var jsonResult = new JSONObject(EntityUtils.toString(response.getEntity()));
+
+            if (response.getStatusLine().getStatusCode() != 202) {
+                throw new AzureException(jsonResult.optJSONObject("error").toString());
+            }
+            return true;
+        } catch (JSONException | IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public void addFace(String faceId, RenderedImage image) {
+
     }
 }

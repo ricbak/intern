@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.awt.image.RenderedImage;
 import java.util.concurrent.CompletableFuture;
 
 @Service
@@ -40,5 +41,14 @@ public class EntryServiceImpl implements EntryService {
         return new SavedPerson(name, savedPersonId, strategy.getName());
     }
 
+    @Override
+    public boolean train() {
+        return strategy.train();
+    }
 
+    @Override
+    public boolean newFace(String personId, RenderedImage image) {
+        strategy.addFace(personId, image);
+        return false;
+    }
 }

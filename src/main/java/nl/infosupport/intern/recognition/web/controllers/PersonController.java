@@ -45,6 +45,21 @@ public class PersonController {
         }
     }
 
+    @GetMapping(path = "/train")
+    public boolean train(){
+        boolean train = entryService.train();
+        System.out.println(train);
+
+        return train;
+    }
+
+    @PostMapping(path = "/{perondId}/face")
+    public String registerFace(){
+
+//        entryService.newFace();
+        return "empty string";
+    }
+
 //    @GetMapping(path = "/persons")
 //    public String listPersons(){
 //        List<Person> people = entryService.listPersons();

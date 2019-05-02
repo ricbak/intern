@@ -5,11 +5,6 @@ import nl.infosupport.intern.recognition.applicationservices.EntryServiceImpl;
 import nl.infosupport.intern.recognition.domainservices.AzureRequestHandler;
 import nl.infosupport.intern.recognition.domainservices.AzureStrategy;
 import nl.infosupport.intern.recognition.domainservices.RecognitionStrategy;
-import nl.infosupport.intern.recognition.domainservices.azure.CreatePersonService;
-import nl.infosupport.intern.recognition.domainservices.azure.CreatePersonServiceImpl;
-import nl.infosupport.intern.recognition.domainservices.azure.actions.person.create.AzureCreatePersonCommand;
-import nl.infosupport.intern.recognition.domainservices.azure.actions.person.create.CreatePersonCommand;
-import nl.infosupport.intern.recognition.domainservices.azure.actions.person.create.CreatePersonCommandHandler;
 import nl.infosupport.intern.recognition.domainservices.repositories.PersonRepositoryAdapter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,10 +39,5 @@ public class BeanConfig {
     public EntryService getAzureEntryService(@Qualifier("getAzureRecognitionStrategy") RecognitionStrategy strategy,
                                              PersonRepositoryAdapter repo) {
         return new EntryServiceImpl(strategy, repo);
-    }
-
-    @Bean
-    public CreatePersonService getAzureCreatePersonService(CreatePersonCommandHandler<CreatePersonCommand> handler, AzureCreatePersonCommand command) {
-        return new CreatePersonServiceImpl(handler, command);
     }
 }
