@@ -25,8 +25,8 @@ public class Person {
     private long id;
 
     private String name;
-
     private String azureId;
+    private String source;
 
     public Person(String name, String azureId) {
         this.name = name;
@@ -46,4 +46,8 @@ public class Person {
     @Column(name = "created_at")
     @CreationTimestamp
     private Date createdAt;
+
+    public void setSource(String source) {
+        this.source = source;
+    }
 }

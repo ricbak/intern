@@ -2,7 +2,6 @@ package nl.infosupport.intern.recognition.applicationservices;
 
 import nl.infosupport.intern.recognition.domain.Person;
 import nl.infosupport.intern.recognition.domainservices.azure.CreatePersonService;
-import nl.infosupport.intern.recognition.domainservices.azure.actions.group.TrainGroupCommandHandler;
 import nl.infosupport.intern.recognition.domainservices.repositories.PersonRepositoryAdapter;
 import nl.infosupport.intern.recognition.web.controllers.NoUniqueNameException;
 import nl.infosupport.intern.recognition.web.models.Person.SavedPerson;
@@ -15,45 +14,46 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+
 @Service
 public class AzureEntryService implements EntryService {
 
-    private static Logger logger = LoggerFactory.getLogger(TrainGroupCommandHandler.class);
+    private static Logger logger = LoggerFactory.getLogger(AzureEntryService.class);
 
 
-    private PersonRepositoryAdapter personRepositoryService;
+    private PersonRepositoryAdapter repo;
     private CreatePersonService createPersonService;
 
     @Autowired
-    public AzureEntryService(PersonRepositoryAdapter personRepositoryService,
+    public AzureEntryService(PersonRepositoryAdapter repo,
                              @Qualifier("getAzureCreatePersonService") CreatePersonService createPersonService) {
 
-        this.personRepositoryService = personRepositoryService;
+        this.repo = repo;
         this.createPersonService = createPersonService;
     }
 
-    @Override
+//    @Override
     public SavedPerson register(String name) {
 
         logger.debug("{}", Thread.currentThread().getName());
 
-        var uniqueName = personRepositoryService.isUniqueName(name)
+        var uniqueName = repo.isUniqueName(name)
                 .orElseThrow(() -> new NoUniqueNameException(name));
 
         var azurePersonIdFuture = CompletableFuture
                 .supplyAsync(() -> createPersonService.createPerson(uniqueName));
 
 
-        String personId = personRepositoryService.create(name, azurePersonIdFuture);
+        String personId = repo.create(name, azurePersonIdFuture, "");
 
-        var savedPerson = new SavedPerson(name, personId);
+        var savedPerson = new SavedPerson(name, personId, "");
 
         return savedPerson;
 
     }
 
-    @Override
+//    @Override
     public List<Person> listPersons(){
-        return personRepositoryService.findAllPersons();
+        return repo.findAllPersons();
     }
 }

@@ -1,29 +1,28 @@
 package nl.infosupport.intern.recognition.domainservices.repositories;
 
 import nl.infosupport.intern.recognition.domain.Person;
-import nl.infosupport.intern.recognition.domainservices.azure.actions.group.TrainGroupCommandHandler;
 import nl.infosupport.intern.recognition.web.controllers.AzureTimeOutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
-@Service
-public class PersonRepositoryService implements PersonRepositoryAdapter {
+@Repository
+public class PersonRepositoryAdapterImpl implements PersonRepositoryAdapter {
 
-    private static Logger logger = LoggerFactory.getLogger(TrainGroupCommandHandler.class);
+    private static Logger logger = LoggerFactory.getLogger(PersonRepositoryAdapterImpl.class);
 
     private PersonRepository repo;
 
-    @Autowired
-    public PersonRepositoryService(PersonRepository personRepository) {
+    public PersonRepositoryAdapterImpl(PersonRepository personRepository) {
         this.repo = personRepository;
     }
 
@@ -38,10 +37,11 @@ public class PersonRepositoryService implements PersonRepositoryAdapter {
     }
 
     @Override
-    public String create(String name, CompletableFuture<String> personId) {
+    public String create(String name, CompletableFuture<String> personId, String source) {
 
         Person person = new Person();
         person.setName(name);
+        person.setSource(source);
 
         try {
             String fetchedPersonIdFromAzure = personId.get(5, SECONDS);

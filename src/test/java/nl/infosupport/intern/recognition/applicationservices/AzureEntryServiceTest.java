@@ -43,7 +43,7 @@ class AzureEntryServiceTest {
 
         when(personRepositoryAdapter.isUniqueName(uniquePersonName)).thenReturn(Optional.of(uniquePersonName));
         when(createPersonService.createPerson(uniquePersonName)).thenReturn("mocked-person-id");
-        when(personRepositoryAdapter.create(any(),any())).thenReturn("succeed");
+        when(personRepositoryAdapter.create(any(),any(), any())).thenReturn("succeed");
 
         SavedPerson result = aez.register(uniquePersonName);
 

@@ -1,31 +1,27 @@
 package nl.infosupport.intern.recognition.web.controllers;
 
 import nl.infosupport.intern.recognition.applicationservices.EntryService;
-import nl.infosupport.intern.recognition.domain.Person;
-import nl.infosupport.intern.recognition.domainservices.azure.actions.group.TrainGroupCommandHandler;
 import nl.infosupport.intern.recognition.web.models.Person.NewPerson;
 import nl.infosupport.intern.recognition.web.models.Person.SavedPerson;
-import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
 
 @RestController()
 @RequestMapping(path = "/person")
 @CrossOrigin
 public class PersonController {
 
-    private static Logger logger = LoggerFactory.getLogger(TrainGroupCommandHandler.class);
+    private static Logger logger = LoggerFactory.getLogger(PersonController.class);
 
     private final EntryService entryService;
 
     @Autowired
-    public PersonController(EntryService entryService) {
+    public PersonController(@Qualifier("getAzureEntryService") EntryService entryService) {
         this.entryService = entryService;
     }
 
@@ -49,15 +45,15 @@ public class PersonController {
         }
     }
 
-    @GetMapping(path = "/persons")
-    public String listPersons(){
-        List<Person> people = entryService.listPersons();
-
-        JSONArray jsonArray = new JSONArray();
-
-        people.forEach(jsonArray::put);
-
-        return jsonArray.toString();
-    }
+//    @GetMapping(path = "/persons")
+//    public String listPersons(){
+//        List<Person> people = entryService.listPersons();
+//
+//        JSONArray jsonArray = new JSONArray();
+//
+//        people.forEach(jsonArray::put);
+//
+//        return jsonArray.toString();
+//    }
 
 }

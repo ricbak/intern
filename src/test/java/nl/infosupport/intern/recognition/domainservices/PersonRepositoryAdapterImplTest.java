@@ -2,7 +2,7 @@ package nl.infosupport.intern.recognition.domainservices;
 
 import nl.infosupport.intern.recognition.domainservices.repositories.PersonRepository;
 import nl.infosupport.intern.recognition.domainservices.repositories.PersonRepositoryAdapter;
-import nl.infosupport.intern.recognition.domainservices.repositories.PersonRepositoryService;
+import nl.infosupport.intern.recognition.domainservices.repositories.PersonRepositoryAdapterImpl;
 import nl.infosupport.intern.recognition.web.controllers.AzureTimeOutException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +21,7 @@ import static org.hamcrest.core.Is.is;
 
 @ExtendWith(MockitoExtension.class)
 @RunWith(MockitoJUnitRunner.class)
-class PersonRepositoryServiceTest {
+class PersonRepositoryAdapterImplTest {
 
     @Mock
     private PersonRepository repo;
@@ -29,7 +29,7 @@ class PersonRepositoryServiceTest {
 
     @BeforeEach
     void setUp() {
-        cs = new PersonRepositoryService(repo);
+        cs = new PersonRepositoryAdapterImpl(repo);
     }
 
     @Test
@@ -37,7 +37,7 @@ class PersonRepositoryServiceTest {
         //
         CompletableFuture<String> completedFuture = CompletableFuture.completedFuture("test-face-id");
 
-        String result = cs.create("test-name-in-time", completedFuture);
+        String result = cs.create("test-name-in-time", completedFuture, "");
 
         assertThat(result, is("test-face-id"));
     }
@@ -47,7 +47,7 @@ class PersonRepositoryServiceTest {
 
         CompletableFuture<String> neverCompletedFuture = new CompletableFuture<>();
 
-        Assertions.assertThrows(AzureTimeOutException.class, ()-> cs.create("Rico", neverCompletedFuture));
+        Assertions.assertThrows(AzureTimeOutException.class, ()-> cs.create("Rico", neverCompletedFuture, " "));
     }
 
     private void sleep(long sleep, TimeUnit timeUnit) {

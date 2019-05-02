@@ -7,5 +7,7 @@ import java.util.List;
 public interface EntryService {
 
     Person.SavedPerson register(String name);
-    List<nl.infosupport.intern.recognition.domain.Person> listPersons();
+    default List<nl.infosupport.intern.recognition.domain.Person> listPersons(){
+        return null;
+    }
 }
