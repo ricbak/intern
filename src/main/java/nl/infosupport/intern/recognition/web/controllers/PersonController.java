@@ -1,15 +1,19 @@
 package nl.infosupport.intern.recognition.web.controllers;
 
 import nl.infosupport.intern.recognition.applicationservices.EntryService;
+import nl.infosupport.intern.recognition.domain.Person;
 import nl.infosupport.intern.recognition.domainservices.azure.actions.group.TrainGroupCommandHandler;
 import nl.infosupport.intern.recognition.web.models.Person.NewPerson;
 import nl.infosupport.intern.recognition.web.models.Person.SavedPerson;
+import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @RestController()
 @RequestMapping(path = "/person")
@@ -43,7 +47,17 @@ public class PersonController {
             throw new ResponseStatusException(
                     HttpStatus.REQUEST_TIMEOUT, exc.getMessage());
         }
+    }
 
+    @GetMapping(path = "/persons")
+    public String listPersons(){
+        List<Person> people = entryService.listPersons();
+
+        JSONArray jsonArray = new JSONArray();
+
+        people.forEach(jsonArray::put);
+
+        return jsonArray.toString();
     }
 
 }

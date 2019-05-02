@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
@@ -68,5 +68,11 @@ public class PersonRepositoryService implements PersonRepositoryAdapter {
         return person.getAzureId();
     }
 
+    @Override
+    public List<Person> findAllPersons() {
+        var list = new ArrayList<Person>();
+        repo.findAll().forEach(list::add);
 
+        return list;
+    }
 }

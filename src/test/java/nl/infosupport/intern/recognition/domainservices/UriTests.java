@@ -1,5 +1,8 @@
 package nl.infosupport.intern.recognition.domainservices;
 
+
+import nl.infosupport.intern.recognition.domain.Person;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
@@ -35,5 +38,13 @@ public class UriTests {
         Logger logger = LoggerFactory.getLogger(UriTests.class);
 
         logger.debug("Variable: {}", "a variable");
+    }
+
+    @Test
+    void JsonArrayTest() throws JSONException {
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.put(new Person("Rico", "Id"));
+
+        System.out.println(jsonArray.toString());
     }
 }

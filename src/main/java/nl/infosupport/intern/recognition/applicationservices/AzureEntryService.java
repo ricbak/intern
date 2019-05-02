@@ -1,5 +1,6 @@
 package nl.infosupport.intern.recognition.applicationservices;
 
+import nl.infosupport.intern.recognition.domain.Person;
 import nl.infosupport.intern.recognition.domainservices.azure.CreatePersonService;
 import nl.infosupport.intern.recognition.domainservices.azure.actions.group.TrainGroupCommandHandler;
 import nl.infosupport.intern.recognition.domainservices.repositories.PersonRepositoryAdapter;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @Service
@@ -48,5 +50,10 @@ public class AzureEntryService implements EntryService {
 
         return savedPerson;
 
+    }
+
+    @Override
+    public List<Person> listPersons(){
+        return personRepositoryService.findAllPersons();
     }
 }

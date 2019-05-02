@@ -1,7 +1,5 @@
 import React from 'react';
 
-import Spinner from 'react-bootstrap/Spinner'
-
 import RegisterForm from '../RegisterForm'
 import RegisterCompleted from '../RegisterCompleted'
 
