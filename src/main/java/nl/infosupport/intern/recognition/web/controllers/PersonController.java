@@ -34,41 +34,27 @@ public class PersonController {
             SavedPerson result = entryService.register(person.getName());
 
             return result.getName();
-        }
-        catch (NoUniqueNameException exc){
+        } catch (NoUniqueNameException exc) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, exc.getMessage());
-        }
-        catch (AzureTimeOutException exc) {
+        } catch (AzureTimeOutException exc) {
             throw new ResponseStatusException(
                     HttpStatus.REQUEST_TIMEOUT, exc.getMessage());
         }
     }
 
     @GetMapping(path = "/train")
-    public boolean train(){
+    public boolean train() {
         boolean train = entryService.train();
-        System.out.println(train);
-
+        logger.debug("{}", train);
         return train;
     }
 
     @PostMapping(path = "/{perondId}/face")
-    public String registerFace(){
+    public String registerFace() {
 
 //        entryService.newFace();
         return "empty string";
     }
-
-//    @GetMapping(path = "/persons")
-//    public String listPersons(){
-//        List<Person> people = entryService.listPersons();
-//
-//        JSONArray jsonArray = new JSONArray();
-//
-//        people.forEach(jsonArray::put);
-//
-//        return jsonArray.toString();
-//    }
 
 }

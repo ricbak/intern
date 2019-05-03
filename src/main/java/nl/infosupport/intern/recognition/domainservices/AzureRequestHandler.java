@@ -37,6 +37,8 @@ public class AzureRequestHandler {
     @Value("${azure.subscription}")
     private String subscription;
 
+    public static final String GROUP = "persongroups";
+
     public AzureRequestHandler(@Qualifier("getAzureGroupId") String groupId,
                                @Qualifier("getAzureSubscription") String subscription) {
         this.groupId = groupId;
@@ -45,15 +47,7 @@ public class AzureRequestHandler {
 
     public HttpResponse performCreatePersonRequest(String name) {
 
-        UriBuilder uriBuilder = new DefaultUriBuilderFactory().builder();
-        URI uri = uriBuilder
-                .scheme("https")
-                .host("westeurope.api.cognitive.microsoft.com")
-                .path("face/v1.0")
-                .path("/persongroups")
-                .path("/" + groupId)
-                .path("/persons")
-                .build();
+        URI uri = uriBuilder(GROUP, groupId, "persons");
 
         HttpPost httpPost = new HttpPost(uri);
         try {
@@ -75,16 +69,9 @@ public class AzureRequestHandler {
         }
     }
 
-    public HttpResponse performTrainRequest(){
-        UriBuilder uriBuilder = new DefaultUriBuilderFactory().builder();
-        URI uri = uriBuilder
-                .scheme("https")
-                .host("westeurope.api.cognitive.microsoft.com")
-                .path("face/v1.0")
-                .path("/persongroups")
-                .path("/" + groupId)
-                .path("/train")
-                .build();
+    public HttpResponse performTrainRequest() {
+
+        URI uri = uriBuilder(GROUP, groupId, "train");
 
         var httpClient = HttpClientFactory.faceApiHttpClient(subscription, APPLICATION_JSON);
         var httpPost = new HttpPost(uri);
@@ -99,18 +86,9 @@ public class AzureRequestHandler {
         }
     }
 
-    public HttpResponse performAddFaceRequest(String personId, RenderedImage image){
-        UriBuilder uriBuilder = new DefaultUriBuilderFactory().builder();
-        URI uri = uriBuilder
-                .scheme("https")
-                .host("westeurope.api.cognitive.microsoft.com")
-                .path("face/v1.0")
-                .path("/persongroups")
-                .path("/" + groupId)
-                .path("/persons")
-                .path("/" + personId)
-                .path("/persistedFaces")
-                .build();
+    public HttpResponse performAddFaceRequest(String personId, RenderedImage image) {
+
+        URI uri = uriBuilder(GROUP, groupId, "persons", personId, "persistedFaces");
 
         try {
             var byteArrayOutputStream = new ByteArrayOutputStream();
@@ -130,5 +108,20 @@ public class AzureRequestHandler {
                             new ProtocolVersion("http", 1, 1), 400, e.getMessage()));
 
         }
+    }
+
+    private URI uriBuilder(String... pathParams) {
+        UriBuilder uriBuilder = new DefaultUriBuilderFactory().builder();
+
+        uriBuilder
+                .scheme("https")
+                .host("westeurope.api.cognitive.microsoft.com")
+                .path("face/v1.0");
+
+        for (String param : pathParams) {
+            uriBuilder.path("/" + param);
+        }
+
+        return uriBuilder.build();
     }
 }
