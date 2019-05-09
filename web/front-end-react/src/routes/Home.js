@@ -11,9 +11,11 @@ function Home() {
             <Card.Body className="text-center">
                 <Card.Title>Maak uw keuze.</Card.Title>
                 <Link to="/register">
-                    <Button variant="primary">Registreren</Button>
-                    <Button variant="primary">Bijleren</Button>
-                </Link>
+                        <Button variant="primary">Registreren</Button>
+                    </Link>
+                    <Link to="/learn">
+                        <Button variant="primary">Bijleren</Button>
+                    </Link>
             </Card.Body>
         </Card>
 

@@ -1,19 +1,14 @@
 package nl.infosupport.intern.recognition.applicationservices;
 
-import nl.infosupport.intern.recognition.web.models.Person.SavedPerson;
-
-import java.awt.image.RenderedImage;
-import java.util.List;
+import java.io.InputStream;
 
 public interface EntryService {
 
-    SavedPerson register(String name);
+    String register(String name);
 
     boolean train();
 
-    boolean newFace(String personId, RenderedImage image);
+    String newFace(String personId, InputStream image);
 
-    default List<nl.infosupport.intern.recognition.domain.Person> listPersons(){
-        return null;
-    }
+    String identifyPerson(InputStream InputStream);
 }

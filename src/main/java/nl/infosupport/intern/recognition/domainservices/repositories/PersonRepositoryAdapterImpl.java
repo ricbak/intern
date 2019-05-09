@@ -1,13 +1,11 @@
 package nl.infosupport.intern.recognition.domainservices.repositories;
 
 import nl.infosupport.intern.recognition.domain.Person;
-import nl.infosupport.intern.recognition.web.controllers.AzureTimeOutException;
+import nl.infosupport.intern.recognition.web.controllers.exceptions.AzureTimeOutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -47,10 +45,10 @@ public class PersonRepositoryAdapterImpl implements PersonRepositoryAdapter {
             String fetchedPersonIdFromAzure = personId.get(5, SECONDS);
             person.setAzureId(fetchedPersonIdFromAzure);
             repo.save(person);
-            logger.debug("entity saved in database");
+            logger.info("entity saved in database");
         } catch (InterruptedException | ExecutionException e) {
             Thread.currentThread().interrupt();
-            logger.debug("Exception: ", e);
+            logger.info("Exception: ", e);
         } catch (TimeoutException e) {
             throw new AzureTimeOutException();
         }
@@ -62,17 +60,9 @@ public class PersonRepositoryAdapterImpl implements PersonRepositoryAdapter {
 //                .exceptionally((throwable) -> "Time-Out")
 //                .thenAcceptAsync(person::setAzureId)
 //                .thenRun(() -> repo.save(person))
-//                .thenRun(() -> logger.debug("entity saved in database"));
+//                .thenRun(() -> logger.info("entity saved in database"));
 
 
         return person.getAzureId();
-    }
-
-    @Override
-    public List<Person> findAllPersons() {
-        var list = new ArrayList<Person>();
-        repo.findAll().forEach(list::add);
-
-        return list;
     }
 }

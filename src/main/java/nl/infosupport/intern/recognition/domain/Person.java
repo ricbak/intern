@@ -34,12 +34,12 @@ public class Person {
     }
 
     public void setName(String name){
-        logger.debug("set name: {}", name);
+        logger.info("set name: {}", name);
         this.name = name;
     }
 
     public void setAzureId(String azureId){
-        logger.debug("set azureId: {}", azureId);
+        logger.info("set azureId: {}", azureId);
         this.azureId = azureId;
     }
 

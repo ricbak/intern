@@ -1,11 +1,9 @@
 package nl.infosupport.intern.recognition.domainservices;
 
-import java.awt.image.RenderedImage;
+import nl.infosupport.intern.recognition.domainservices.template.AzureActionTemplate;
 
 public interface RecognitionStrategy {
 
-    String getName();
-    String create(String name);
-    boolean train();
-    void addFace(String faceId, RenderedImage image);
+    String getStrategyId();
+    String performAction(AzureActionTemplate azureActionTemplate);
 }

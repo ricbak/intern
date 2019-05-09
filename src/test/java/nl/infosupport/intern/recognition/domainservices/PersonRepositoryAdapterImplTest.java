@@ -3,7 +3,7 @@ package nl.infosupport.intern.recognition.domainservices;
 import nl.infosupport.intern.recognition.domainservices.repositories.PersonRepository;
 import nl.infosupport.intern.recognition.domainservices.repositories.PersonRepositoryAdapter;
 import nl.infosupport.intern.recognition.domainservices.repositories.PersonRepositoryAdapterImpl;
-import nl.infosupport.intern.recognition.web.controllers.AzureTimeOutException;
+import nl.infosupport.intern.recognition.web.controllers.exceptions.AzureTimeOutException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package nl.infosupport.intern.recognition.web.controllers;
+package nl.infosupport.intern.recognition.web.controllers.exceptions;
 
 public class AzureTimeOutException extends RuntimeException {
 

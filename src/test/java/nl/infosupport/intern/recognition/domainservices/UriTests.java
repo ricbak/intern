@@ -34,10 +34,15 @@ public class UriTests {
     }
 
     @Test
+    void jsonArray() throws Exception{
+        JSONArray jsonArray = new JSONArray("[]");
+    }
+
+    @Test
     void testLogger() {
         Logger logger = LoggerFactory.getLogger(UriTests.class);
 
-        logger.debug("Variable: {}", "a variable");
+        logger.info("Variable: {}", "a variable");
     }
 
     @Test

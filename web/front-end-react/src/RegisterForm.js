@@ -17,7 +17,8 @@ class RegisterForm extends React.Component {
         this.state = {
             name: null,
             loading: false,
-            unique: true,
+            error: false,
+            errorReason: "",
         };
     }
 
@@ -39,6 +40,7 @@ class RegisterForm extends React.Component {
 
     handleChange(e) {
         console.log(e.target.value);
+
         this.setState({
             name: e.target.value,
             loading: false
@@ -56,15 +58,21 @@ class RegisterForm extends React.Component {
         console.log(name);
 
         axios.post('http://localhost:8080/person/register', {
-            name: name
+            name
         })
             .then((response) => {
                 this.props.setRegister(name);
                 console.log("response");
             })
-            .catch((error) => {
-                console.log(error);
-                this.setState({ unique: false })})
+            .catch((er) => {
+                console.log(er.response);
+                var response = er.response.data
+                this.setState({
+                    unique: false,
+                    error: true,
+                    errorReason: response,
+                })
+            })
             .then(() => {
                 this.toggleLoading();
             });
@@ -72,14 +80,17 @@ class RegisterForm extends React.Component {
 
     render() {
         const loading = this.state.loading;
-        const unique = this.state.unique;
-
-        const notUnique = unique ? "" : <Form.Text className="text-muted">Deze naam bestaat al, kies een andere naam.</Form.Text>;
 
         const waiting = loading ?
             <Spinner animation="border" role="status">
                 <span className="sr-only">Loading...</span>
             </Spinner> : '';
+
+        const errorStyle = this.state.error ? {} : { display: 'none' }
+
+        const errorLine = (
+            <Form.Text className="text-muted" >{this.state.errorReason}</Form.Text>
+        );
 
         return (
             <Form onSubmit={(e) => this.handleSubmit(e)}>
@@ -88,13 +99,15 @@ class RegisterForm extends React.Component {
                         <Form.Group controlId="name">
                             <Card.Title><Form.Label>Vul uw naam in om te registreren.</Form.Label></Card.Title>
                             <Form.Control type="text" placeholder="Uw naam" required onChange={(e) => this.handleChange(e)} />
-                            {notUnique}
+                            <div className="error-line" style={errorStyle}>
+                                {errorLine}
+                            </div>
                         </Form.Group>
                         <Link to="/">
                             <Button variant="secondary">Annuleren</Button>
                         </Link>
                         <Button variant="primary" type="submit">Opslaan</Button>
-                        
+
                     </Card.Body>
                     <Card.Footer className="text-center">{waiting}</Card.Footer>
                 </Card>
