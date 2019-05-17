@@ -2,20 +2,11 @@ pipeline {
   agent any
   stages {
     stage('test') {
-      parallel {
-        stage('test') {
-          steps {
-            echo 'test step'
-          }
-        }
-        stage('error') {
-          steps {
-            recordIssues()
-          }
-        }
+      steps {
+        echo 'test step'
       }
     }
-    stage('') {
+    stage('error') {
       steps {
         recordIssues()
       }
