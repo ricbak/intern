@@ -151,46 +151,46 @@ class AzureRequestHandlerTest {
         Assertions.assertThrows(AzureException.class, ()-> requestHandler.handleRequest(request,"application/json"));
     }
 
-    @Test
-    void detectFaceInImageWithFaceShouldReturnStatusOkeAndFaceId() throws Exception{
-
-        HttpClient octetStreamFaceApiClient = HttpClients.custom().setDefaultHeaders(
-                Arrays.asList(
-                        new BasicHeader("Ocp-Apim-Subscription-Key", subscription),
-                        new BasicHeader("Content-Type", ContentType.APPLICATION_OCTET_STREAM.toString())
-                )).build();
-
-        when(factory.getOctetStreamFaceApiClient()).thenReturn(octetStreamFaceApiClient);
-
-        var image = new FileInputStream(new File("src/main/resources/static/woman-face.jpg"));
-
-        var detectAction= new AzureActionDetectFace(image.readAllBytes());
-        detectAction.setAzureRequestHandler(requestHandler);
-
-        String result = detectAction.doAction();
-
-        System.out.println(result);
-    }
-
-    @Test
-    void identifyWithKnownFaceShouldReturnHighConfidence() throws Exception{
-        HttpClient jsonClient = HttpClients.custom().setDefaultHeaders(
-                Arrays.asList(
-                        new BasicHeader("Ocp-Apim-Subscription-Key", subscription),
-                        new BasicHeader("Content-Type", ContentType.APPLICATION_JSON.toString())
-                )).build();
-
-        when(factory.getApplicationJsonFaceApiClient()).thenReturn(jsonClient);
-
-        var image = new FileInputStream(new File("src/main/resources/static/woman-face.jpg"));
-
-//        var action = new AzureActionIdentifyPerson("8d4613df-96a9-416c-9ce0-49891db5b4ca");
+//    @Test
+//    void detectFaceInImageWithFaceShouldReturnStatusOkeAndFaceId() throws Exception{
 //
-//        action.setAzureRequestHandler(requestHandler);
-//        String confidence = action.doAction();
+//        HttpClient octetStreamFaceApiClient = HttpClients.custom().setDefaultHeaders(
+//                Arrays.asList(
+//                        new BasicHeader("Ocp-Apim-Subscription-Key", subscription),
+//                        new BasicHeader("Content-Type", ContentType.APPLICATION_OCTET_STREAM.toString())
+//                )).build();
 //
-//        System.out.println(confidence);
-    }
+//        when(factory.getOctetStreamFaceApiClient()).thenReturn(octetStreamFaceApiClient);
+//
+//        var image = new FileInputStream(new File("src/main/resources/static/woman-face.jpg"));
+//
+//        var detectAction= new AzureActionDetectFace(image.readAllBytes());
+//        detectAction.setAzureRequestHandler(requestHandler);
+//
+//        String result = detectAction.doAction();
+//
+//        System.out.println(result);
+//    }
+//
+//    @Test
+//    void identifyWithKnownFaceShouldReturnHighConfidence() throws Exception{
+//        HttpClient jsonClient = HttpClients.custom().setDefaultHeaders(
+//                Arrays.asList(
+//                        new BasicHeader("Ocp-Apim-Subscription-Key", subscription),
+//                        new BasicHeader("Content-Type", ContentType.APPLICATION_JSON.toString())
+//                )).build();
+//
+//        when(factory.getApplicationJsonFaceApiClient()).thenReturn(jsonClient);
+//
+//        var image = new FileInputStream(new File("src/main/resources/static/woman-face.jpg"));
+//
+////        var action = new AzureActionIdentifyPerson("8d4613df-96a9-416c-9ce0-49891db5b4ca");
+////
+////        action.setAzureRequestHandler(requestHandler);
+////        String confidence = action.doAction();
+////
+////        System.out.println(confidence);
+//    }
 }
 
 

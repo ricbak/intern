@@ -6,8 +6,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Repository
-public interface PersonRepository extends CrudRepository<Person, String>{
+@Repository("PersonRepository")
+public interface PersonRepository extends CrudRepository<Person, Long>{
     boolean existsByName(String name);
     Optional<Person> findByAzureId(String azureId);
 }

@@ -52,7 +52,7 @@ public class AzureActionAddFace extends AzureActionTemplate {
         try {
             return new JSONObject(response).getString("persistedFaceId");
         } catch (JSONException e) {
-            logger.info("Exception: ", e);
+            logger.info("Exception: {}", e.getMessage());
             throw new AzureException("No persisted face id found in response");
         }
     }

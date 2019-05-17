@@ -9,7 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -28,9 +30,17 @@ public class Person {
     private String azureId;
     private String source;
 
+    @OneToMany(
+            mappedBy="person",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
+    private List<Identification> identifications;
+
     public Person(String name, String azureId) {
         this.name = name;
         this.azureId = azureId;
+
+        identifications = new ArrayList<>();
     }
 
     public void setName(String name){
@@ -41,6 +51,10 @@ public class Person {
     public void setAzureId(String azureId){
         logger.info("set azureId: {}", azureId);
         this.azureId = azureId;
+    }
+
+    public void addIdentification(Identification identification){
+        this.identifications.add(identification);
     }
 
     @Column(name = "created_at")

@@ -4,6 +4,7 @@ import React, { Suspense, lazy } from 'react';
 const Home = lazy(() => import('./routes/Home'));
 const Register = lazy(() => import('./routes/Register'));
 const Learn = lazy(() => import('./routes/Learn'));
+const Identify = lazy(() => import('./routes/Identify'));
 const Persons = lazy(() => import('./routes/admin/Persons'));
 
 const App = () => (
@@ -17,6 +18,7 @@ const App = () => (
             <Route exact path="/" component={Home} />
             <Route path="/register" component={Register} />
             <Route path="/learn" component={Learn} />
+            <Route path="/identify" component={Identify} />
             {/* admin */}
             <Route path="/admin/person/list" component={Persons} />
           </Switch>

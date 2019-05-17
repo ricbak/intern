@@ -4,6 +4,7 @@ import nl.infosupport.intern.recognition.domain.Person;
 import nl.infosupport.intern.recognition.web.controllers.exceptions.AzureTimeOutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -14,20 +15,18 @@ import java.util.concurrent.TimeoutException;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 @Repository
-public class PersonRepositoryAdapterImpl implements PersonRepositoryAdapter {
+public class PersonRepositoryDecoratorImpl extends PersonRepositoryDecorator {
 
-    private static Logger logger = LoggerFactory.getLogger(PersonRepositoryAdapterImpl.class);
+    private static Logger logger = LoggerFactory.getLogger(PersonRepositoryDecoratorImpl.class);
 
-    private PersonRepository repo;
-
-    public PersonRepositoryAdapterImpl(PersonRepository personRepository) {
-        this.repo = personRepository;
+    public PersonRepositoryDecoratorImpl(@Qualifier("PersonRepository")PersonRepository personRepository) {
+        super(personRepository);
     }
 
     @Override
     public Optional<String> isUniqueName(String name) {
 
-        if(!repo.existsByName(name)){
+        if(!existsByName(name)){
             return Optional.of(name);
         }
 
@@ -44,7 +43,7 @@ public class PersonRepositoryAdapterImpl implements PersonRepositoryAdapter {
         try {
             String fetchedPersonIdFromAzure = personId.get(5, SECONDS);
             person.setAzureId(fetchedPersonIdFromAzure);
-            repo.save(person);
+            save(person);
             logger.info("entity saved in database");
         } catch (InterruptedException | ExecutionException e) {
             Thread.currentThread().interrupt();

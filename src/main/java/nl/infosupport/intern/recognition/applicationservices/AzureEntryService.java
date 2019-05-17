@@ -1,9 +1,9 @@
 package nl.infosupport.intern.recognition.applicationservices;
 
+import nl.infosupport.intern.recognition.domain.Identification;
 import nl.infosupport.intern.recognition.domain.Person;
 import nl.infosupport.intern.recognition.domainservices.RecognitionStrategy;
-import nl.infosupport.intern.recognition.domainservices.repositories.PersonRepository;
-import nl.infosupport.intern.recognition.domainservices.repositories.PersonRepositoryAdapter;
+import nl.infosupport.intern.recognition.domainservices.repositories.PersonRepositoryDecorator;
 import nl.infosupport.intern.recognition.domainservices.template.*;
 import nl.infosupport.intern.recognition.web.controllers.exceptions.AzureCouldNotIdentifyException;
 import nl.infosupport.intern.recognition.web.controllers.exceptions.ImageFormatException;
@@ -26,17 +26,14 @@ import java.util.concurrent.Executors;
 public class AzureEntryService implements EntryService {
     private static Logger logger = LoggerFactory.getLogger(AzureEntryService.class);
 
-    //Could be any Azure, Google
     private RecognitionStrategy strategy;
 
-    private PersonRepositoryAdapter repo;
-    private PersonRepository crudRepo;
+    private PersonRepositoryDecorator repo;
 
     public AzureEntryService(@Qualifier("getAzureRecognitionStrategy") RecognitionStrategy strategy,
-                             PersonRepositoryAdapter repo, PersonRepository crudRepo) {
+                             @Qualifier("getPersonRepositoryAdapter") PersonRepositoryDecorator repo) {
         this.strategy = strategy;
         this.repo = repo;
-        this.crudRepo = crudRepo;
     }
 
     @Override
@@ -55,13 +52,6 @@ public class AzureEntryService implements EntryService {
         String savedPersonId = repo.create(name, personId, strategy.getStrategyId());
 
         return savedPersonId;
-    }
-
-    @Override
-    public boolean train() {
-        String result = strategy.performAction(new AzureActionTrain());
-
-        return result.isEmpty();
     }
 
     @Override
@@ -89,12 +79,12 @@ public class AzureEntryService implements EntryService {
     }
 
     @Override
-    public String identifyPerson(InputStream image) {
+    public String identifyPerson(InputStream inputStream) {
 
         byte[] imageBytes = {};
 
         try {
-            imageBytes = image.readAllBytes();
+            imageBytes = inputStream.readAllBytes();
 
             //Check if image is valid
             ImageIO.read(new ByteArrayInputStream(imageBytes)).toString();
@@ -109,15 +99,24 @@ public class AzureEntryService implements EntryService {
         String candidate = strategy.performAction(new AzureActionIdentifyPerson(faceId));
         logger.info("{}",candidate);
 
-        //check if confidence is above 0.5 and return person's name
+
         try {
             var jsonObject = new JSONObject(candidate);
-            int confidence = jsonObject.optInt("confidence");
-            if(confidence > 0.5){
-                String personId = jsonObject.optString("personId");
-                Optional<Person> identifiedPerson = crudRepo.findByAzureId(personId);
+            double confidence = jsonObject.getDouble("confidence");
 
-                return identifiedPerson.orElseThrow().getName();
+            String personId = jsonObject.optString("personId");
+            Person identifiedPerson = repo.findByAzureId(personId).orElseThrow();
+
+            Identification identification = new Identification(confidence);
+            identification.setPerson(identifiedPerson);
+            identifiedPerson.addIdentification(identification);
+            repo.save(identifiedPerson);
+
+            //check if confidence is above 0.7 and return person's name
+            if(confidence > 0.7){
+                logger.info("identified person: {}", identifiedPerson.getName());
+
+                return identifiedPerson.getName();
             } else {
                 throw new AzureCouldNotIdentifyException("Kan geen identificatie doen, zekerheid is: " + confidence);
             }

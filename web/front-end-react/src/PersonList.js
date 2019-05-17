@@ -53,6 +53,7 @@ function ListItem(props) {
 function List(props) {
     console.log("list persons");
     console.log(props.persons);
+    
     const persons = props.persons;
     const listItems = persons.map((person) =>
         <ListItem key={person.id}

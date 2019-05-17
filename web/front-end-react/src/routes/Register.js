@@ -2,6 +2,7 @@ import React from 'react';
 
 import RegisterForm from '../RegisterForm'
 import RegisterCompleted from '../RegisterCompleted'
+import Home from './Home';
 
 
 class Register extends React.Component {
@@ -33,7 +34,7 @@ class Register extends React.Component {
         if (!isRegistered) {
             content = <RegisterForm setRegister={this.setRegister} />
         } else {
-            content = <RegisterCompleted name={name} />
+            content = <Home/>
         }
 
         return (

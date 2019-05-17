@@ -7,16 +7,12 @@ import nl.infosupport.intern.recognition.domainservices.AzureStrategy;
 import nl.infosupport.intern.recognition.domainservices.HttpClientFactory;
 import nl.infosupport.intern.recognition.domainservices.RecognitionStrategy;
 import nl.infosupport.intern.recognition.domainservices.repositories.PersonRepository;
-import nl.infosupport.intern.recognition.domainservices.repositories.PersonRepositoryAdapter;
+import nl.infosupport.intern.recognition.domainservices.repositories.PersonRepositoryDecorator;
+import nl.infosupport.intern.recognition.domainservices.repositories.PersonRepositoryDecoratorImpl;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.converter.BufferedImageHttpMessageConverter;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.xml.MarshallingHttpMessageConverter;
-
-import java.awt.image.BufferedImage;
 
 @Configuration
 public class BeanConfig {
@@ -44,8 +40,13 @@ public class BeanConfig {
 
     @Bean
     public EntryService getAzureEntryService(@Qualifier("getAzureRecognitionStrategy") RecognitionStrategy strategy,
-                                             PersonRepositoryAdapter repo, PersonRepository crudRepo) {
-        return new AzureEntryService(strategy, repo, crudRepo);
+                                             @Qualifier("getPersonRepositoryAdapter") PersonRepositoryDecorator repo) {
+        return new AzureEntryService(strategy, repo);
+    }
+
+    @Bean
+    public PersonRepositoryDecorator getPersonRepositoryAdapter(@Qualifier("PersonRepository") PersonRepository repo){
+        return new PersonRepositoryDecoratorImpl(repo);
     }
 
     @Bean

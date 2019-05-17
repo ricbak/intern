@@ -1,12 +1,10 @@
 import React from 'react';
 
-import { Link } from "react-router-dom";
-
 import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Spinner from 'react-bootstrap/Spinner'
-
+import { Link } from "react-router-dom";
+import Button from 'react-bootstrap/Button';
 
 class RegisterForm extends React.Component {
 
@@ -103,11 +101,12 @@ class RegisterForm extends React.Component {
                                 {errorLine}
                             </div>
                         </Form.Group>
-                        <Link to="/">
-                            <Button variant="secondary">Annuleren</Button>
-                        </Link>
-                        <Button variant="primary" type="submit">Opslaan</Button>
-
+                        <div>
+                            <Link to="/">
+                                <Button variant="secondary">Annuleren</Button>
+                            </Link>
+                            <Button variant="primary" type="submit">Opslaan</Button>
+                        </div>
                     </Card.Body>
                     <Card.Footer className="text-center">{waiting}</Card.Footer>
                 </Card>

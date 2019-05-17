@@ -1,84 +1,56 @@
 import React from 'react';
+
+import LearnForm from '../LearnForm'
+import Notification from '../Notification'
+import { Link } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
-import Dropdown from 'react-bootstrap/Dropdown';
 
 class Learn extends React.Component {
 
     constructor(props) {
         super(props)
-
         this.state = {
-            persons: [],
+            personName: "",
+            choseName: false,
+            notificationText: "",
         }
+
+        this.setName = this.setName.bind(this);
     }
 
-    fetchPersons() {
-        const axios = require('axios');
+    setName(name, response) {
+        console.log(name);
+        console.log(response);
 
-        axios.get('http://localhost:8080/admin/person/list')
-            .then((response) => {
-                const persons = response.data;
-                this.setState({
-                    persons
-                })
-            })
-            .catch((error) => {
-            })
-            .then(() => {
-            });
-    }
-
-    learnPerson(e) {
-
-        console.log("hoi");
-
-        //     const axios = require('axios');
-
-        //     axios.get('http://localhost:8080/person/face/add')
-        //         .then((response) => {
-
-        //         })
-        //         .catch((error) => {
-        //         })
-        //         .then(() => {
-        //         });
-    }
-
-    dropDownItem() {
-        return (
-            <Dropdown.Item ></Dropdown.Item>
-        )
-    }
-
-    dropDownList() {
-        return (
-            <Dropdown>
-                <Dropdown.Toggle variant="success" id="dropdown-basic">
-                    Dropdown Button
-            </Dropdown.Toggle>
-
-                <Dropdown.Menu>
-
-                    <div onClick={this.learnPerson.bind(this, 'work')}>
-                        <Dropdown.Item >Another action</Dropdown.Item>
-                    </div>
-                </Dropdown.Menu>
-            </Dropdown>
-
-        )
+        this.setState({
+            personName: name,
+            choseName: true,
+            notificationText: response,
+        })
     }
 
     render() {
-        const dropdown = this.dropDownList();
+        const choseName = this.state.choseName;
+
+        let display;
+
+        if (choseName) {
+            display =
+            <div>
+                <div>
+                    <Link to="/">
+                        <Button variant="secondary">Begin scherm</Button>
+                    </Link>
+                </div>
+                <Notification name={this.state.personName} text={this.state.notificationText} />
+                </div>
+
+        } else {
+            display = <LearnForm setName={(name, azureId) => this.setName(name, azureId)} />
+        }
 
         return (
-            <Card>
-                <Card.Body className="text-center">
-                    <Card.Title>Kies uw naam.</Card.Title>
-                    {dropdown}
-                </Card.Body>
-            </Card>
+            display
         );
     }
 }

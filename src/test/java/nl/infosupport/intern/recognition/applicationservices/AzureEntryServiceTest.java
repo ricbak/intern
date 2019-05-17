@@ -1,9 +1,7 @@
 package nl.infosupport.intern.recognition.applicationservices;
 
 import nl.infosupport.intern.recognition.domainservices.AzureStrategy;
-import nl.infosupport.intern.recognition.domainservices.repositories.PersonRepository;
-import nl.infosupport.intern.recognition.domainservices.repositories.PersonRepositoryAdapter;
-import nl.infosupport.intern.recognition.web.controllers.exceptions.AzureTimeOutException;
+import nl.infosupport.intern.recognition.domainservices.repositories.PersonRepositoryDecorator;
 import nl.infosupport.intern.recognition.web.controllers.exceptions.ImageFormatException;
 import nl.infosupport.intern.recognition.web.controllers.exceptions.NoUniqueNameException;
 import org.json.JSONObject;
@@ -15,14 +13,9 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.annotation.Profile;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -31,14 +24,10 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-@RunWith(MockitoJUnitRunner.class)
-class AzureEntryServiceTest {
+public class AzureEntryServiceTest {
 
     @Mock
-    private PersonRepositoryAdapter repo;
-
-    @Mock
-    private PersonRepository crudRepo;
+    private PersonRepositoryDecorator repo;
 
     @Mock
     AzureStrategy azureStrategy;
@@ -47,7 +36,7 @@ class AzureEntryServiceTest {
 
     @BeforeEach
     void setUp() {
-        entryService = new AzureEntryService(azureStrategy, repo, crudRepo);
+        entryService = new AzureEntryService(azureStrategy, repo);
     }
 
     @Test
@@ -56,7 +45,7 @@ class AzureEntryServiceTest {
         String mockedPersonId = "mocked-person-id";
 
         when(repo.isUniqueName(any())).thenReturn(Optional.of(uniquePersonName));
-        when(azureStrategy.performAction(any())).thenReturn(new JSONObject().put("personId", mockedPersonId).toString());
+//        when(azureStrategy.performAction(any())).thenReturn(new JSONObject().put("personId", mockedPersonId).toString());
 
         when(repo.create(any(), any(), any())).thenReturn(mockedPersonId);
 
@@ -83,23 +72,23 @@ class AzureEntryServiceTest {
         Assertions.assertThrows(ImageFormatException.class, () -> entryService.newFace("tst", inputStream));
     }
 
-    @Test
-    void displayImage() throws Exception {
-//        FileInputStream image = new FileInputStream("C:\\Users\\ricob\\Google Drive\\School\\Informatica\\Afstuderen\\Opdracht\\Visualisatie\\woman-face.jpg");
-//
-//
-//        BufferedImage bufferedImage = ImageIO.read(image);
-//
-//        JFrame frame = new JFrame();
-//        JLabel label = new JLabel(new ImageIcon(bufferedImage));
-//        frame.setLayout(new FlowLayout());
-//        frame.setSize(200, 300);
-//        frame.add(label);
-//        frame.setDefaultCloseOperation
-//                (JFrame.EXIT_ON_CLOSE);
-//        frame.pack();
-//        frame.setVisible(true);
-//
-//        Thread.currentThread().sleep(100000);
-    }
+//    @Test
+//    void displayImage() throws Exception {
+////        FileInputStream image = new FileInputStream("C:\\Users\\ricob\\Google Drive\\School\\Informatica\\Afstuderen\\Opdracht\\Visualisatie\\woman-face.jpg");
+////
+////
+////        BufferedImage bufferedImage = ImageIO.read(image);
+////
+////        JFrame frame = new JFrame();
+////        JLabel label = new JLabel(new ImageIcon(bufferedImage));
+////        frame.setLayout(new FlowLayout());
+////        frame.setSize(200, 300);
+////        frame.add(label);
+////        frame.setDefaultCloseOperation
+////                (JFrame.EXIT_ON_CLOSE);
+////        frame.pack();
+////        frame.setVisible(true);
+////
+////        Thread.currentThread().sleep(100000);
+//    }
 }

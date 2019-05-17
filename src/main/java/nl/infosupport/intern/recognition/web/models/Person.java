@@ -5,16 +5,16 @@ import lombok.Data;
 public class Person {
 
     @Data
-    static public class SavedPerson {
-
+    public static class SavedPerson {
+        private final long id;
         private final String name;
-        private final String id;
+        private final String azureId;
         private final String source;
 
     }
 
     @Data
-    static public class NewPerson {
+    public static class NewPerson {
 
         private String name;
     }

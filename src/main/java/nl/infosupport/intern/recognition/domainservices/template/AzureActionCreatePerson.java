@@ -63,7 +63,7 @@ public class AzureActionCreatePerson extends AzureActionTemplate {
         try {
             return new JSONObject(response).getString("personId");
         } catch (JSONException e) {
-            logger.info("Exception: ", e);
+            logger.info("Exception: {}", e.getMessage());
             throw new AzureException("No person id found in response");
         }
     }

@@ -1,8 +1,8 @@
 package nl.infosupport.intern.recognition.domainservices;
 
 import nl.infosupport.intern.recognition.domainservices.repositories.PersonRepository;
-import nl.infosupport.intern.recognition.domainservices.repositories.PersonRepositoryAdapter;
-import nl.infosupport.intern.recognition.domainservices.repositories.PersonRepositoryAdapterImpl;
+import nl.infosupport.intern.recognition.domainservices.repositories.PersonRepositoryDecorator;
+import nl.infosupport.intern.recognition.domainservices.repositories.PersonRepositoryDecoratorImpl;
 import nl.infosupport.intern.recognition.web.controllers.exceptions.AzureTimeOutException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,15 +21,15 @@ import static org.hamcrest.core.Is.is;
 
 @ExtendWith(MockitoExtension.class)
 @RunWith(MockitoJUnitRunner.class)
-class PersonRepositoryAdapterImplTest {
+class PersonRepositoryDecoratorImplTest {
 
     @Mock
     private PersonRepository repo;
-    private PersonRepositoryAdapter cs;
+    private PersonRepositoryDecorator cs;
 
     @BeforeEach
     void setUp() {
-        cs = new PersonRepositoryAdapterImpl(repo);
+        cs = new PersonRepositoryDecoratorImpl(repo);
     }
 
     @Test

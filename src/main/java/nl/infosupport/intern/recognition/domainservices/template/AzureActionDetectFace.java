@@ -49,7 +49,7 @@ public class AzureActionDetectFace extends AzureActionTemplate {
             var jsonResult = new JSONArray(response);
             return jsonResult.getJSONObject(0).getString("faceId");
         } catch (JSONException e) {
-            logger.info("Exception: ", e);
+            logger.info("Exception: {}", e.getMessage());
             throw new AzureException("No face found in image");
         }
     }

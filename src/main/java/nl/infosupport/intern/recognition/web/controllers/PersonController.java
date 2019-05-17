@@ -1,22 +1,15 @@
 package nl.infosupport.intern.recognition.web.controllers;
 
 import nl.infosupport.intern.recognition.applicationservices.EntryService;
-import nl.infosupport.intern.recognition.web.controllers.exceptions.AzureTimeOutException;
-import nl.infosupport.intern.recognition.web.controllers.exceptions.NoUniqueNameException;
 import nl.infosupport.intern.recognition.web.models.Person.NewPerson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.BufferedImageHttpMessageConverter;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -44,19 +37,14 @@ public class PersonController {
 
     }
 
-    @GetMapping(path = "/train")
-    public ResponseEntity<Boolean> train() {
-        return ResponseEntity.ok(entryService.train());
-    }
-
     @PostMapping(path = "/face/add")
-    public ResponseEntity<String> registerFace(@RequestParam("personId") String personId, @RequestParam("image") MultipartFile image) {
+    public ResponseEntity<String> registerFace(@RequestParam("personId") String personId, @RequestParam("file") MultipartFile image) {
         InputStream inputStream;
 
         try {
             inputStream = image.getInputStream();
         } catch (IOException e) {
-            logger.info("Error: ", e);
+            logger.info("Error: {}", e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
 
@@ -64,16 +52,16 @@ public class PersonController {
     }
 
     @PostMapping(path = "/detect")
-    public ResponseEntity<String> identifyPerson(@RequestParam("image") MultipartFile image) {
-
+    public ResponseEntity<String> identifyPerson(@RequestParam("file") MultipartFile image) {
+        logger.info("\n Incomming request");
         InputStream inputStream;
 
         try {
             inputStream = image.getInputStream();
         } catch (IOException e) {
-            logger.info("Error: ", e);
+            logger.info("Error: {}", e.getMessage());
             return ResponseEntity.badRequest().body("Couldn't get input stream from image");
         }
-            return ResponseEntity.ok(entryService.identifyPerson(inputStream));
+        return ResponseEntity.ok(entryService.identifyPerson(inputStream));
     }
 }

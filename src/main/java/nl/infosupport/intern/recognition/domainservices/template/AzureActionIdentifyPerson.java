@@ -63,7 +63,7 @@ public class AzureActionIdentifyPerson extends AzureActionTemplate {
             logger.info("First found candidate: \n{}", firstFoundCandidate);
             return firstFoundCandidate.toString();
         } catch (JSONException e) {
-            logger.info("Exception: ", e);
+            logger.info("Exception: {}", e.getMessage());
             throw new AzureException("Geen kandidaten gevonden");
         }
     }
