@@ -2,8 +2,17 @@ pipeline {
   agent any
   stages {
     stage('test') {
-      steps {
-        echo 'test step'
+      parallel {
+        stage('test') {
+          steps {
+            echo 'test step'
+          }
+        }
+        stage('') {
+          steps {
+            recordIssues()
+          }
+        }
       }
     }
   }
