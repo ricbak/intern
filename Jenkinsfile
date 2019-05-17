@@ -8,11 +8,16 @@ pipeline {
             echo 'test step'
           }
         }
-        stage('') {
+        stage('error') {
           steps {
             recordIssues()
           }
         }
+      }
+    }
+    stage('') {
+      steps {
+        recordIssues()
       }
     }
   }
