@@ -1,7 +1,6 @@
 package nl.infosupport.intern.recognition.domainservices;
 
-import nl.infosupport.intern.recognition.domainservices.template.AzureActionTemplate;
-import org.json.JSONObject;
+import nl.infosupport.intern.recognition.domainservices.template.ActionTemplate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,11 +21,11 @@ class AzureStrategyTest {
     AzureRequestHandler requestHandler;
 
     @Mock
-    AzureActionTemplate action;
+    ActionTemplate action;
 
     @BeforeEach
     void setUp() {
-//        action = Mockito.mock(AzureActionTemplate.class);
+//        action = Mockito.mock(ActionTemplate.class);
     }
 
     @Test

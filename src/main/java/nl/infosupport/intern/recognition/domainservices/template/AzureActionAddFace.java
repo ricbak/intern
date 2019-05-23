@@ -6,7 +6,7 @@ import org.apache.http.entity.ByteArrayEntity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class AzureActionAddFace extends AzureActionTemplate {
+public class AzureActionAddFace extends ActionTemplate {
 
     private String personId;
     private byte[] imageBytes;

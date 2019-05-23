@@ -121,7 +121,7 @@ def identify():
 
     
     # After 10 faces are saved, return oke
-    while(tries < 10 and identified == False):
+    while(tries < 3 and identified == False):
 
         # Capture frame-by-frame
         ret, frame = cap.read()

@@ -1,9 +1,7 @@
 package nl.infosupport.intern.recognition.domainservices.template;
 
 import nl.infosupport.intern.recognition.domainservices.AzureRequestHandler;
-import nl.infosupport.intern.recognition.domainservices.AzureStrategy;
 import org.apache.http.client.methods.HttpUriRequest;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.util.DefaultUriBuilderFactory;
@@ -11,8 +9,8 @@ import org.springframework.web.util.UriBuilder;
 
 import java.net.URI;
 
-public abstract class AzureActionTemplate {
-    protected static Logger logger = LoggerFactory.getLogger(AzureActionTemplate.class);
+public abstract class ActionTemplate {
+    protected static Logger logger = LoggerFactory.getLogger(ActionTemplate.class);
 
     private AzureRequestHandler azureRequestHandler;
     protected String contentType;

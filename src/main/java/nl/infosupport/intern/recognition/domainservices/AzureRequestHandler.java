@@ -17,9 +17,9 @@ import java.io.IOException;
 public class AzureRequestHandler {
     private static Logger logger = LoggerFactory.getLogger(AzureRequestHandler.class);
 
-    private HttpClientFactory clientFactory;
+    private HttpClientBuilder clientFactory;
 
-    public AzureRequestHandler(HttpClientFactory clientFactory) {
+    public AzureRequestHandler(HttpClientBuilder clientFactory) {
         this.clientFactory = clientFactory;
     }
 

@@ -1,22 +1,8 @@
 package nl.infosupport.intern.recognition.domainservices;
 
-import nl.infosupport.intern.recognition.domainservices.template.AzureActionAddFace;
-import nl.infosupport.intern.recognition.domainservices.template.AzureActionDetectFace;
-import nl.infosupport.intern.recognition.domainservices.template.AzureActionIdentifyPerson;
-import nl.infosupport.intern.recognition.domainservices.template.AzureActionTemplate;
 import nl.infosupport.intern.recognition.web.controllers.exceptions.AzureException;
-import nl.infosupport.intern.recognition.web.controllers.exceptions.AzureTimeOutException;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.entity.ByteArrayEntity;
-import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicHeader;
-import org.apache.http.message.BasicHttpResponse;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,14 +13,6 @@ import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Arrays;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -50,7 +28,7 @@ class AzureRequestHandlerTest {
     private String groupId = "infosupport";
 
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
-    HttpClientFactory factory;
+    HttpClientBuilder factory;
 
     @Mock
     HttpUriRequest request;

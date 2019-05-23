@@ -12,12 +12,12 @@ import java.util.Arrays;
 
 @Component
 @Getter
-public class HttpClientFactory {
+public class HttpClientBuilder {
 
     private HttpClient octetStreamFaceApiClient;
     private HttpClient applicationJsonFaceApiClient;
 
-    private HttpClientFactory(@Qualifier("getAzureSubscription") String subscription) {
+    private HttpClientBuilder(@Qualifier("getAzureSubscription") String subscription) {
 
         applicationJsonFaceApiClient = HttpClients.custom().setDefaultHeaders(
                 Arrays.asList(

@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 
-public class AzureActionIdentifyPerson extends AzureActionTemplate {
+public class AzureActionIdentifyPerson extends ActionTemplate {
 
     private String detectedFaceId;
 

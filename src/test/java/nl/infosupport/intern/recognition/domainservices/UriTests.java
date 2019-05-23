@@ -52,4 +52,11 @@ public class UriTests {
 
         System.out.println(jsonArray.toString());
     }
+
+    @Test
+    void toLowerCase() {
+        String s = "".toLowerCase();
+        System.out.println(s);
+
+    }
 }

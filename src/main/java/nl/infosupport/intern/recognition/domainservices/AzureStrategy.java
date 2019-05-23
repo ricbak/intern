@@ -1,6 +1,6 @@
 package nl.infosupport.intern.recognition.domainservices;
 
-import nl.infosupport.intern.recognition.domainservices.template.AzureActionTemplate;
+import nl.infosupport.intern.recognition.domainservices.template.ActionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +23,10 @@ public class AzureStrategy implements RecognitionStrategy {
     }
 
     @Override
-    public String performAction(AzureActionTemplate azureActionTemplate){
+    public String performAction(ActionTemplate actionTemplate){
 
         logger.info("set AzureRequestHandler with: {}", azureRequestHandler);
-        azureActionTemplate.setAzureRequestHandler(azureRequestHandler);
-        return azureActionTemplate.doAction();
+        actionTemplate.setAzureRequestHandler(azureRequestHandler);
+        return actionTemplate.doAction();
     }
 }

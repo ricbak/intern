@@ -4,7 +4,7 @@ import nl.infosupport.intern.recognition.applicationservices.EntryService;
 import nl.infosupport.intern.recognition.applicationservices.AzureEntryService;
 import nl.infosupport.intern.recognition.domainservices.AzureRequestHandler;
 import nl.infosupport.intern.recognition.domainservices.AzureStrategy;
-import nl.infosupport.intern.recognition.domainservices.HttpClientFactory;
+import nl.infosupport.intern.recognition.domainservices.HttpClientBuilder;
 import nl.infosupport.intern.recognition.domainservices.RecognitionStrategy;
 import nl.infosupport.intern.recognition.domainservices.repositories.PersonRepository;
 import nl.infosupport.intern.recognition.domainservices.repositories.PersonRepositoryDecorator;
@@ -50,7 +50,7 @@ public class BeanConfig {
     }
 
     @Bean
-    public AzureRequestHandler getAzureRequestHandler(HttpClientFactory factory) {
+    public AzureRequestHandler getAzureRequestHandler(HttpClientBuilder factory) {
         return new AzureRequestHandler(factory);
     }
 }

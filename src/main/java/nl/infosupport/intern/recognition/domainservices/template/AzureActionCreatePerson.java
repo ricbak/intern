@@ -1,21 +1,16 @@
 package nl.infosupport.intern.recognition.domainservices.template;
 
-import nl.infosupport.intern.recognition.domainservices.AzureStrategy;
 import nl.infosupport.intern.recognition.web.controllers.exceptions.AzureException;
-import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-public class AzureActionCreatePerson extends AzureActionTemplate {
+public class AzureActionCreatePerson extends ActionTemplate {
 
     private String name;
 

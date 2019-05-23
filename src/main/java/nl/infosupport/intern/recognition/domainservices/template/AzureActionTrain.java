@@ -2,7 +2,7 @@ package nl.infosupport.intern.recognition.domainservices.template;
 
 import org.apache.http.client.methods.HttpPost;
 
-public class AzureActionTrain extends AzureActionTemplate {
+public class AzureActionTrain extends ActionTemplate {
 
     @Override
     protected void setContentType() {
