@@ -52,8 +52,10 @@ class AzureActionAddFaceTest {
 
         byte[] bytes = image.readAllBytes();
 
-        System.out.println(bytes.length);
-        System.out.println(bytes.length);
+        int lengthFirst = bytes.length;
+        int lengthSecond = bytes.length;
+
+        assertThat(lengthFirst, is(lengthSecond));
 
 
     }

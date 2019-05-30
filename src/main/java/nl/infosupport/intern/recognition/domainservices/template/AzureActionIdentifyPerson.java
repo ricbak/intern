@@ -47,7 +47,7 @@ public class AzureActionIdentifyPerson extends ActionTemplate {
             postRequest.setEntity(
                     new StringEntity(body));
         } catch (UnsupportedEncodingException | JSONException e) {
-            e.printStackTrace();
+            logger.info(e.getMessage(),e);
         }
 
         this.request = postRequest;
@@ -63,7 +63,7 @@ public class AzureActionIdentifyPerson extends ActionTemplate {
             logger.info("First found candidate: \n{}", firstFoundCandidate);
             return firstFoundCandidate.toString();
         } catch (JSONException e) {
-            logger.info("Exception: {}", e.getMessage());
+            logger.info(e.getMessage(), e);
             throw new AzureException("Geen kandidaten gevonden");
         }
     }

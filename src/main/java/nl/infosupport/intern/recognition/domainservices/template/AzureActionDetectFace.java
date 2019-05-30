@@ -1,5 +1,6 @@
 package nl.infosupport.intern.recognition.domainservices.template;
 
+import nl.infosupport.intern.recognition.domainservices.template.exceptions.ImageNotSetException;
 import nl.infosupport.intern.recognition.web.controllers.exceptions.AzureException;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
@@ -32,7 +33,7 @@ public class AzureActionDetectFace extends ActionTemplate {
         var postRequest = new HttpPost(uri);
 
         if (imageBytes.length == 0) {
-            throw new RuntimeException("Image byte array is empty!");
+            throw new ImageNotSetException("Image byte array is empty!");
         }
 
         postRequest.setEntity(new ByteArrayEntity(imageBytes));
@@ -49,7 +50,7 @@ public class AzureActionDetectFace extends ActionTemplate {
             var jsonResult = new JSONArray(response);
             return jsonResult.getJSONObject(0).getString("faceId");
         } catch (JSONException e) {
-            logger.info("Exception: {}", e.getMessage());
+            logger.info("e.getMessage()", e);
             throw new AzureException("No face found in image");
         }
     }

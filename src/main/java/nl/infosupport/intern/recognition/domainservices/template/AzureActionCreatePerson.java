@@ -38,13 +38,18 @@ public class AzureActionCreatePerson extends ActionTemplate {
                                     .put("name", name)
                                     .toString()));
         } catch (UnsupportedEncodingException | JSONException e) {
-            e.printStackTrace();
+            logger.info(e.getMessage());
         }
 
         try {
-            logger.info("HttpPost body: {}", EntityUtils.toString(httpPost.getEntity()));
+            String entityString = EntityUtils.toString(httpPost.getEntity());
+
+            if(!entityString.isEmpty()){
+                logger.info("HttpPost body: {}", entityString);
+            }
+
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.info(e.getMessage());
         }
 
         this.request = httpPost;

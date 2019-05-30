@@ -46,12 +46,12 @@ class AzureRequestHandlerTest {
     void createPersonRequestWithValidInputShouldReturnStatusOke() throws Exception {
 
         String personId = "mocked-person-id";
-        when(factory.getApplicationJsonFaceApiClient()
+        when(factory.buildJsonHttpClient()
                 .execute(any())
                 .getStatusLine()
                 .getStatusCode())
                 .thenReturn(200);
-        when(factory.getApplicationJsonFaceApiClient()
+        when(factory.buildJsonHttpClient()
                 .execute(any())
                 .getEntity())
                 .thenReturn(new StringEntity(
@@ -72,12 +72,12 @@ class AzureRequestHandlerTest {
     void whenAddFaceWithCorrectImageShouldReturnPersistedFaceId() throws Exception {
 
         String persistedFaceId = "mocked-persisted-face-id";
-        when(factory.getOctetStreamFaceApiClient()
+        when(factory.buildOctetStreamHttpClient()
                 .execute(any())
                 .getStatusLine()
                 .getStatusCode())
                 .thenReturn(200);
-        when(factory.getOctetStreamFaceApiClient()
+        when(factory.buildOctetStreamHttpClient()
                 .execute(any())
                 .getEntity())
                 .thenReturn(
@@ -96,7 +96,7 @@ class AzureRequestHandlerTest {
 
     @Test
     void trainGroupShouldReturnStatusOke() throws Exception{
-        when(factory.getApplicationJsonFaceApiClient()
+        when(factory.buildJsonHttpClient()
                 .execute(any())
                 .getStatusLine()
                 .getStatusCode())
@@ -110,12 +110,12 @@ class AzureRequestHandlerTest {
 
     @Test
     void whenResponseIsNot200AndNot202ThenShouldThrowAzureException() throws Exception {
-        when(factory.getApplicationJsonFaceApiClient()
+        when(factory.buildJsonHttpClient()
                 .execute(any())
                 .getStatusLine()
                 .getStatusCode())
                 .thenReturn(400);
-        when(factory.getApplicationJsonFaceApiClient()
+        when(factory.buildJsonHttpClient()
                 .execute(any())
                 .getEntity()
                 )

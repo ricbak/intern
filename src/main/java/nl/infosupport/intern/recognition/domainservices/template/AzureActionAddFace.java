@@ -1,5 +1,7 @@
 package nl.infosupport.intern.recognition.domainservices.template;
 
+import nl.infosupport.intern.recognition.domainservices.template.exceptions.ImageNotSetException;
+import nl.infosupport.intern.recognition.domainservices.template.exceptions.PersonIdNotSetException;
 import nl.infosupport.intern.recognition.web.controllers.exceptions.AzureException;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
@@ -24,7 +26,7 @@ public class AzureActionAddFace extends ActionTemplate {
     @Override
     protected void buildUri() {
         if (personId.isEmpty()) {
-            throw new RuntimeException("Person-id is not set! first call method: 'setPersonId'");
+            throw new PersonIdNotSetException("Person-id is not set! first call method: 'setPersonId'");
         }
 
         this.uri = uriBuilder()
@@ -36,11 +38,10 @@ public class AzureActionAddFace extends ActionTemplate {
         var postRequest = new HttpPost(uri);
 
         if (imageBytes.length == 0) {
-            throw new RuntimeException("Image is not set! first call method: 'setImage'");
+            throw new ImageNotSetException("Image is not set! first call method: 'setImage'");
         }
 
         postRequest.setEntity(new ByteArrayEntity(imageBytes));
-
         this.request = postRequest;
     }
 
@@ -52,7 +53,7 @@ public class AzureActionAddFace extends ActionTemplate {
         try {
             return new JSONObject(response).getString("persistedFaceId");
         } catch (JSONException e) {
-            logger.info("Exception: {}", e.getMessage());
+            logger.info(e.getMessage(), e);
             throw new AzureException("No persisted face id found in response");
         }
     }

@@ -6,6 +6,7 @@ import nl.infosupport.intern.recognition.domainservices.RecognitionStrategy;
 import nl.infosupport.intern.recognition.domainservices.repositories.PersonRepositoryDecorator;
 import nl.infosupport.intern.recognition.domainservices.template.*;
 import nl.infosupport.intern.recognition.web.controllers.exceptions.AzureCouldNotIdentifyException;
+import nl.infosupport.intern.recognition.web.controllers.exceptions.AzureException;
 import nl.infosupport.intern.recognition.web.controllers.exceptions.ImageFormatException;
 import nl.infosupport.intern.recognition.web.controllers.exceptions.NoUniqueNameException;
 import org.json.JSONException;
@@ -18,7 +19,6 @@ import org.springframework.stereotype.Service;
 import javax.imageio.ImageIO;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
 
@@ -40,18 +40,16 @@ public class AzureEntryService implements EntryService {
     public String register(String name) {
         logger.info("{}", Thread.currentThread().getName());
 
-        repo.isUniqueName(name)
+        String uniqueName = repo.isUniqueName(name)
                 .orElseThrow(() -> new NoUniqueNameException(name));
 
-        var action = new AzureActionCreatePerson(name);
+        var action = new AzureActionCreatePerson(uniqueName);
 
         var personId = CompletableFuture
                 .supplyAsync(() ->
                         strategy.performAction(action));
 
-        String savedPersonId = repo.create(name, personId, strategy.getStrategyId());
-
-        return savedPersonId;
+        return repo.create(uniqueName, personId, strategy.getStrategyId());
     }
 
     @Override
@@ -115,14 +113,12 @@ public class AzureEntryService implements EntryService {
             //check if confidence is above 0.7 and return person's name
             if(confidence > 0.7){
                 logger.info("identified person: {}", identifiedPerson.getName());
-
                 return identifiedPerson.getName();
             } else {
                 throw new AzureCouldNotIdentifyException("Kan geen identificatie doen, zekerheid is: " + confidence);
             }
         } catch (JSONException e) {
-            logger.info("Error: ", e);
-            throw new RuntimeException(e);
+            throw new AzureException("Json exception: " + e.getMessage());
         }
     }
 }

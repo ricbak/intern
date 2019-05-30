@@ -4,6 +4,10 @@ import lombok.Data;
 
 public class Person {
 
+    private Person(){
+
+    }
+
     @Data
     public static class SavedPerson {
         private final long id;

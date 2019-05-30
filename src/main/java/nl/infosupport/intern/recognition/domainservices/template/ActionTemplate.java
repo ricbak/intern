@@ -1,6 +1,7 @@
 package nl.infosupport.intern.recognition.domainservices.template;
 
 import nl.infosupport.intern.recognition.domainservices.AzureRequestHandler;
+import nl.infosupport.intern.recognition.domainservices.template.exceptions.HandlerNotSetException;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +26,7 @@ public abstract class ActionTemplate {
     public String doAction() {
 
         if (!handlerSet) {
-            throw new RuntimeException("Handler not set!");
+            throw new HandlerNotSetException("Handler not set!");
         }
 
         setContentType();

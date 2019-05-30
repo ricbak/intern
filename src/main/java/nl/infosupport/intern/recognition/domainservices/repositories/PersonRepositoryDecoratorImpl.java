@@ -52,16 +52,6 @@ public class PersonRepositoryDecoratorImpl extends PersonRepositoryDecorator {
             throw new AzureTimeOutException();
         }
 
-
-        //Need to throw an exception instead of dealing with the exception here because
-        //now I can't deal with the exception in the controller
-//        personId.orTimeout(5, SECONDS)
-//                .exceptionally((throwable) -> "Time-Out")
-//                .thenAcceptAsync(person::setAzureId)
-//                .thenRun(() -> repo.save(person))
-//                .thenRun(() -> logger.info("entity saved in database"));
-
-
         return person.getAzureId();
     }
 }

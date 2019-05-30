@@ -14,18 +14,23 @@ import java.util.Arrays;
 @Getter
 public class HttpClientBuilder {
 
-    private HttpClient octetStreamFaceApiClient;
-    private HttpClient applicationJsonFaceApiClient;
+    private final String subscription;
 
-    private HttpClientBuilder(@Qualifier("getAzureSubscription") String subscription) {
+    public HttpClientBuilder(@Qualifier("getAzureSubscription") String subscription) {
 
-        applicationJsonFaceApiClient = HttpClients.custom().setDefaultHeaders(
+        this.subscription = subscription;
+    }
+
+    public HttpClient buildJsonHttpClient(){
+        return HttpClients.custom().setDefaultHeaders(
                 Arrays.asList(
                         new BasicHeader("Ocp-Apim-Subscription-Key", subscription),
                         new BasicHeader("Content-Type", ContentType.APPLICATION_JSON.toString())
                 )).build();
+    }
 
-        octetStreamFaceApiClient = HttpClients.custom().setDefaultHeaders(
+    public HttpClient buildOctetStreamHttpClient(){
+        return HttpClients.custom().setDefaultHeaders(
                 Arrays.asList(
                         new BasicHeader("Ocp-Apim-Subscription-Key", subscription),
                         new BasicHeader("Content-Type", ContentType.APPLICATION_OCTET_STREAM.toString())

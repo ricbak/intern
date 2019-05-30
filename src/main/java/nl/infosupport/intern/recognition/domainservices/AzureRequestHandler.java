@@ -28,10 +28,10 @@ public class AzureRequestHandler {
 
         logger.info("content-type: {}", contentType);
 
-        HttpClient client = clientFactory.getApplicationJsonFaceApiClient();
+        HttpClient client = clientFactory.buildJsonHttpClient();
 
         if (contentType.equals("application/octet-stream")) {
-            client = clientFactory.getOctetStreamFaceApiClient();
+            client = clientFactory.buildOctetStreamHttpClient();
         }
 
         try {
@@ -54,10 +54,9 @@ public class AzureRequestHandler {
 
             return response;
         } catch (IOException e) {
-            logger.info("IOException: ", e);
-            throw new AzureException(e.getMessage());
+            throw new AzureException("IOException: " + e.getMessage());
         } catch (JSONException e) {
-            throw new RuntimeException(e);
+            throw new AzureException("JsonException: " + e.getMessage());
         }
     }
 }
